@@ -11,15 +11,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Dipanjan Panja | full stack web developer",
-      debugShowCheckedModeBanner: false,
-      color: Color(0xFF2c2f32),
-      theme: ThemeData(
-          brightness: Brightness.light,
-          primaryColorBrightness: Brightness.light,
-          accentColorBrightness: Brightness.light),
-      home: MyAppChild(),
-    );
+        title: "Dipanjan Panja | full stack web developer",
+        debugShowCheckedModeBanner: false,
+        color: Color(0xFF2c2f32),
+        // onGenerateRoute: (settings) {
+        //   List segments = settings.name.split('/').where((x) => !x.isEmpty).toList();
+        //   String page = segments.length > 0 ? segments[0] : '';
+        // },
+        // initialRoute: "/",
+        theme: ThemeData(brightness: Brightness.light, primaryColorBrightness: Brightness.light, accentColorBrightness: Brightness.light),
+        // home: MyAppChild(),
+        initialRoute: '/',
+        routes: <String, WidgetBuilder>{
+          "/": (context) => MyAppChild(),
+        });
   }
 }
 

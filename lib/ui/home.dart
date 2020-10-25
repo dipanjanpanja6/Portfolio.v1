@@ -19,6 +19,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isSmallScreen = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    html.window.history.pushState(null, "Home", "/");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +39,7 @@ class _HomePageState extends State<HomePage> {
                 _buildBackground(),
                 _buildBody(context, constraints),
                 _buildMadeWith(
-                  alignment: ResponsiveWidget.isSmallScreen(context)
-                      ? Alignment.topRight
-                      : Alignment.bottomLeft,
+                  alignment: ResponsiveWidget.isSmallScreen(context) ? Alignment.topRight : Alignment.bottomLeft,
                 ),
                 isSmallScreen ? SizedBox.shrink() : _buildSocialButtons()
               ],
@@ -73,51 +77,53 @@ class _HomePageState extends State<HomePage> {
 
   // body:----------------------------------------------------------------------
   Widget _buildBody(BuildContext context, BoxConstraints constraints) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          ConstrainedBox(
-            constraints: BoxConstraints(
-                minWidth: constraints.maxWidth,
-                minHeight: constraints.maxHeight),
-            child: ResponsiveWidget(
-              largeScreen: _buildLargeScreen(context),
-              mediumScreen: _buildMediumScreen(context),
-              smallScreen: _buildSmallScreen(context),
-              onSmallScreen: () {
-                if (!isSmallScreen) {
-                  Future.delayed(Duration.zero, () {
-                    setState(() {
-                      print('insdie callback');
-                      isSmallScreen = true;
-                    });
+    return ListView(
+      physics: BouncingScrollPhysics(),
+      addAutomaticKeepAlives: true,
+      cacheExtent: 12000.0,
+      scrollDirection: Axis.vertical,
+      // child: Column(
+      children: <Widget>[
+        ConstrainedBox(
+          constraints: BoxConstraints(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
+          child: ResponsiveWidget(
+            largeScreen: _buildLargeScreen(context),
+            mediumScreen: _buildMediumScreen(context),
+            smallScreen: _buildSmallScreen(context),
+            onSmallScreen: () {
+              if (!isSmallScreen) {
+                Future.delayed(Duration.zero, () {
+                  setState(() {
+                    print('insdie callback');
+                    isSmallScreen = true;
                   });
-                }
-              },
-              onMediumScreen: () {
-                if (isSmallScreen) {
-                  Future.delayed(Duration.zero, () {
-                    setState(() {
-                      print('insdie callback');
-                      isSmallScreen = false;
-                    });
+                });
+              }
+            },
+            onMediumScreen: () {
+              if (isSmallScreen) {
+                Future.delayed(Duration.zero, () {
+                  setState(() {
+                    print('insdie callback');
+                    isSmallScreen = false;
                   });
-                }
-              },
-              onLargeScreen: () {
-                if (isSmallScreen) {
-                  Future.delayed(Duration.zero, () {
-                    setState(() {
-                      print('insdie callback');
-                      isSmallScreen = false;
-                    });
+                });
+              }
+            },
+            onLargeScreen: () {
+              if (isSmallScreen) {
+                Future.delayed(Duration.zero, () {
+                  setState(() {
+                    print('insdie callback');
+                    isSmallScreen = false;
                   });
-                }
-              },
-            ),
-          )
-        ],
-      ),
+                });
+              }
+            },
+          ),
+        )
+      ],
+      // ),
     );
   }
 
@@ -195,14 +201,10 @@ class _HomePageState extends State<HomePage> {
         direction: axis,
         children: <Widget>[
           // _buildMenuItem(quarterTurns, Strings.menu_medium_link, Strings.menu_medium),
-          _buildMenuItem(
-              quarterTurns, Strings.menu_github_link, Strings.menu_github),
-          _buildMenuItem(quarterTurns, Strings.menu_linked_in_link,
-              Strings.menu_linked_in),
-          _buildMenuItem(
-              quarterTurns, Strings.menu_twitter_link, Strings.menu_twitter),
-          _buildMenuItem(
-              quarterTurns, Strings.menu_facebook_link, Strings.menu_facebook),
+          _buildMenuItem(quarterTurns, Strings.menu_github_link, Strings.menu_github),
+          _buildMenuItem(quarterTurns, Strings.menu_linked_in_link, Strings.menu_linked_in),
+          _buildMenuItem(quarterTurns, Strings.menu_twitter_link, Strings.menu_twitter),
+          _buildMenuItem(quarterTurns, Strings.menu_facebook_link, Strings.menu_facebook),
         ],
       ),
     );
